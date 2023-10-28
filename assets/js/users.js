@@ -24,17 +24,18 @@ $(document).ready(function () {
                 <td>${user.userName}</td>
                 <td>${user.email}</td>
                 <td>${user.phone}</td>
+                <td>${user.roleName}</td>
                 <td>
                     <div class="dropdown">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                             <i class="bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="../../html/user-update.html?id=${user.id}">
+                            <a class="dropdown-item" href="../../html/update-user.html?id=${user.id}">
                                 <i class="bx bx-edit-alt me-1"></i> Edit
                             </a>
-                            <a class="dropdown-item" href="javascript:void(0);">
-                                <i class="bx bx-trash me-1"></i> Delete
+                            <a class="dropdown-item" href="../../html/user-detail.html?id=${user.id}">
+                                <i class="bx bx-detail me-1"></i> Detail
                             </a>
                         </div>
                     </div>
@@ -43,5 +44,7 @@ $(document).ready(function () {
 
             idElUser.innerHTML = htmlDisplay;
         });
-    })
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        alert("Error " + errorThrown);
+    });
 })
