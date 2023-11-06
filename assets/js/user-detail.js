@@ -12,12 +12,16 @@ $(document).ready(function () {
     }).done(function (data) {
         const user = data?.data;
         let htmlDisplay = "";
+        const avatar = data?.data?.avatar;
+        const dataImage = avatar ?
+            `http://localhost:8080/file/pathImage=avatars&fileName=${avatar}` :
+            "../assets/img/elements/12.jpg";
 
         if (!!user) {
             htmlDisplay = `
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img class="card-img card-img-left" src="http://localhost:8080/file" alt="Card image" />
+                        <img class="card-img card-img-left" src=${dataImage} alt="Card image" />
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
