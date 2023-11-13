@@ -75,7 +75,45 @@ $(document).ready(function () {
                         </div>
                     </div>
                 </div>
-                <div class="mt-2">
+
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label for="accountNumber" class="form-label">Account Number</label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="accountNumber"
+                            name="accountNumber"
+                            value="${
+                              user.accountNumber ? user.accountNumber : ""
+                            }"
+                            autofocus
+                        />
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="amount" class="form-label">Amount ($)</label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            name="amount"
+                            id="amount"
+                            value="${user.amount ? user.amount : 0}"
+                            disabled
+                        />
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="transfer" class="form-label">Transfer ($)</label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="transfer"
+                            name="transferAmount"
+                            placeholder="0"
+                        />
+                    </div>
+                </div>
+                
+                <div class="mt-2" style="display: flex; justify-content: end;">
                     <button type="submit" class="btn btn-primary me-2 btn-save">Save changes</button>
                     <button type="reset" class="btn btn-outline-secondary btn-back">Cancel</button>
                 </div>
