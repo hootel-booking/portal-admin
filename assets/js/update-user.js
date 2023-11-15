@@ -133,6 +133,6 @@ $(document).ready(function () {
         // prevent reload page
         e.preventDefault();
 
-        window.location.replace("http://127.0.0.1:5502/html/users.html");
+        window.location.href = "http://127.0.0.1:5502/html/users.html";
     })
 })
