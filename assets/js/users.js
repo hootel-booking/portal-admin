@@ -1,9 +1,13 @@
 $(document).ready(function () {
     const idElTable = document.getElementById("idUserTable");
+    const token = localStorage.getItem("TOKEN");
 
     $.ajax({
         url: `http://localhost:8080/users`,
         method: "get",
+        headers: {
+            Authorization: "Bearer " + token,
+        },
     }).done(function (data) {
         const users = data?.data;
 
