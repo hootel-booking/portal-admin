@@ -53,23 +53,23 @@ $(document).ready(function () {
             </li>
             <li>
                 <a class="dropdown-item" href="./profile.html">
-                <i class="bx bx-user me-2"></i>
-                <span class="align-middle">My Profile</span>
+                    <i class="bx bx-user me-2"></i>
+                    <span class="align-middle">My Profile</span>
                 </a>
             </li>
             <li>
                 <a class="dropdown-item" href="./settings.html">
-                <i class="bx bx-cog me-2"></i>
-                <span class="align-middle">Settings</span>
+                    <i class="bx bx-cog me-2"></i>
+                    <span class="align-middle">Settings</span>
                 </a>
             </li>
             <li>
                 <div class="dropdown-divider"></div>
             </li>
             <li>
-                <a class="dropdown-item" href="auth-login-basic.html">
-                <i class="bx bx-power-off me-2"></i>
-                <span class="align-middle">Log Out</span>
+                <a class="dropdown-item logout" href="javascript:void(0)">
+                    <i class="bx bx-power-off me-2"></i>
+                    <span class="align-middle">Log Out</span>
                 </a>
             </li>
             </ul>
@@ -79,5 +79,11 @@ $(document).ready(function () {
   
       idUserNavEl.innerHTML = htmlDisplay;
     }
+
+    $(document).on("click", ".logout", function (e) {
+        localStorage.removeItem("TOKEN");
+        localStorage.removeItem("CURRENT_USER");
+        window.location.href = "http://127.0.0.1:5502/html/auth-login.html";
+      });
   });
   
