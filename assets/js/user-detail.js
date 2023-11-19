@@ -3,12 +3,16 @@ $(document).ready(function () {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const idUser = Number(urlParams.get("id"));
+    const token = localStorage.getItem("TOKEN");
 
     const idElForm = document.getElementById("userInfo");
 
     $.ajax({
         url: `http://localhost:8080/users/id=${idUser}`,
         method: "get",
+        headers: {
+            Authorization: "Bearer " + token,
+        },
     }).done(function (data) {
         const user = data?.data;
         let htmlDisplay = "";

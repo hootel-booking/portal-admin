@@ -1,5 +1,6 @@
 $(document).ready(function () {
     // get id reservation
+    const token = localStorage.getItem("TOKEN");
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const idReservation = Number(urlParams.get("id"));
@@ -8,6 +9,9 @@ $(document).ready(function () {
     $.ajax({
         url: `http://localhost:8080/reservation/id=${idReservation}`,
         method: "get",
+        headers: {
+            Authorization: "Bearer " + token,
+        },
     }).done(function (data) {
         const reservation = data?.data;
         const betwenTwoDays = canculateBetweenTwoDays(new Date(reservation.dateCheckIn), new Date(reservation.dateCheckout));
@@ -179,7 +183,10 @@ $(document).ready(function () {
             data: JSON.stringify({
                 deposit: deposit,
                 idStatus: idStatus
-            })
+            }),
+            headers: {
+                Authorization: "Bearer " + token,
+            },
         }).done(function (data) {
             const result = data?.data;
             if (result) {

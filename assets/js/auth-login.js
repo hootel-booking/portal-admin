@@ -1,9 +1,11 @@
 $(document).ready(function () {
     class User {
-        constructor(id, email, role) {
+        constructor(id, email, role, avatar, userName) {
             this.id = id;
             this.email = email;
             this.role = role;
+            this.avatar = avatar;
+            this.userName = userName;
         }
     }
 
@@ -25,7 +27,13 @@ $(document).ready(function () {
         }).done(function (data) {
             if (data?.statusCode === 200) {
                 const response = data?.data;
-                const user = new User(response.user.id, response.user.email, response.user.roleName);
+                const user = new User(
+                    response.user.id,
+                    response.user.email,
+                    response.user.roleName,
+                    response.user.avatar,
+                    response.user.userName
+                );
 
                 if (user.role === "ROLE_ADMIN") {
                     localStorage.setItem("TOKEN", response.token);

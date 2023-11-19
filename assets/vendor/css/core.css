@@ -9059,7 +9059,7 @@ button.list-group-item-gray.active {
 }
 
 .w-px-40 {
-  width: 40px !important;
+  width: 40px;
 }
 
 .w-px-50 {
@@ -9211,7 +9211,7 @@ button.list-group-item-gray.active {
 }
 
 .h-auto {
-  height: auto !important;
+  height: auto;
 }
 
 .h-25 {

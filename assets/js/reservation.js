@@ -1,9 +1,13 @@
 $(document).ready(function () {
     const idElTable = document.getElementById("reservationTable");
+    const token = localStorage.getItem("TOKEN");
 
     $.ajax({
         url: `http://localhost:8080/reservation`,
         method: "get",
+        headers: {
+            Authorization: "Bearer " + token,
+        },
     }).done(function (data) {
         const reservationList = data?.data;
 

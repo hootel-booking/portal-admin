@@ -1,6 +1,8 @@
 $(document).ready(function () {
     // get id user
-    const idUser = 1;
+    const currentUser = JSON.parse(localStorage.getItem("CURRENT_USER"));
+    const idUser = currentUser?.id;
+    const token = localStorage.getItem("TOKEN");
 
     renderInfoUser();
 
@@ -10,6 +12,9 @@ $(document).ready(function () {
         $.ajax({
             url: `http://localhost:8080/users/id=${idUser}`,
             method: "get",
+            headers: {
+                Authorization: "Bearer " + token,
+            },
         }).done(function (data) {
             const user = data?.data;
             let htmlDisplay = "";
@@ -97,7 +102,7 @@ $(document).ready(function () {
                             type="text"
                             name="amount"
                             id="amount"
-                            value="${user.amount ? user.amount : 0}"
+                            value="${user.amount ? user.amount : parseFloat(0)}"
                             disabled
                         />
                     </div>
@@ -130,10 +135,23 @@ $(document).ready(function () {
 
         const idElFile = document.getElementById("formAccountSettings");
         const formData = new FormData(idElFile);
+        formData.set("upload", $("#upload").val());
+        formData.set("firstName", $("#firstName").val());
+        formData.set("lastName", $("#lastName").val());
+        formData.set("phone", $("#phone").val());
+        formData.set("accountNumber", $("#accountNumber").val());
+        formData.set("amount", $("#amount").val() ? $("#amount").val() : 0);
+        formData.set(
+            "transferAmount",
+            $("#transferAmount").val() ? $("#transferAmount").val() : 0
+        );
 
         fetch(`http://localhost:8080/users/profileId=${idUser}`, {
             method: 'PUT',
             body: formData,
+            headers: {
+                Authorization: "Bearer " + token,
+            },
         })
         .then(response => response.json())
         .then(data => {
