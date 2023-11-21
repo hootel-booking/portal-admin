@@ -90,7 +90,7 @@
             </li>
 
             <!-- Rooms -->
-            <li class="menu-item">
+            <li class="menu-item active">
               <a href="rooms.html" class="menu-link">
                 <i class='menu-icon bx bx-hotel'></i>
                 <div data-i18n="Analytics">Rooms</div>
@@ -98,7 +98,7 @@
             </li>
 
             <!-- Users -->
-            <li class="menu-item active">
+            <li class="menu-item">
               <a href="users.html" class="menu-link">
                 <i class="menu-icon bx bx-user"></i>
                 <div data-i18n="Analytics">Users</div>
@@ -154,49 +154,66 @@
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
-
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Users</h4>
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Room</h4>
                 <!-- toast message -->
-              <div
-                class="bs-toast toast fade bg-success"
-                role="alert"
-                aria-live="assertive"
-                aria-atomic="true"
-                style="position: fixed;"
-                id="toastMessage"
-              >
-              </div>
+                <div
+                  class="bs-toast toast fade bg-success"
+                  role="alert"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                  style="position: fixed;"
+                  id="toastMessage"
+                >
+                </div>
 
-              <!-- Basic Bootstrap Table -->
-              <div class="card">
-                <div class="table-responsive text-nowrap">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Role</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0" id="idUserTable">
-                    </tbody>
-                  </table>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card mb-4" >
+                    <form id="formNewRoom" enctype="multipart/form-data">
+                      <h5 class="card-header">Update Room</h5>
+                      <div class="card-body">
+                          <div class="d-flex align-items-start align-items-sm-center gap-4">
+                              <img
+                                  src="../assets/img/avatars/room.jpg"
+                                  alt="user-avatar"
+                                  class="d-block rounded"
+                                  height="100"
+                                  width="100"
+                                  id="uploadedImage"
+                              />
+                              <div class="button-wrapper">
+                                  <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                  <span class="d-none d-sm-block">Upload new photo</span>
+                                  <i class="bx bx-upload d-block d-sm-none"></i>
+                                  <input
+                                      type="file"
+                                      id="upload"
+                                      class="account-file-input"
+                                      hidden
+                                      accept="image/png, image/jpeg"
+                                      name="file"
+                                  />
+                                  </label>
+                                  <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                                    <i class="bx bx-reset d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">Reset</span>
+                                  </button>
+                                  <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                              </div>
+                          </div>
+                      </div>
+                      <hr class="my-0" />
+                      <div class="card-body" id="formRoom"></div>
+                    </form>
+                  </div>
                 </div>
               </div>
-              <!--/ Basic Bootstrap Table -->
-
+            </div>
             <!-- / Content -->
 
             <div class="content-backdrop fade"></div>
           </div>
-          <!-- Content wrapper -->
-        </div>
         <!-- / Layout page -->
       </div>
 
@@ -221,12 +238,13 @@
     <script src="../assets/js/main.js"></script>
 
     <!-- Page JS -->
+    <script src="../assets/js/pages-account-settings-account.js"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <script src="../assets/js/guard.js"></script>
     <script src="../assets/js/user-nav-info.js"></script>
-    <script src="../assets/js/users.js"></script>
+    <script src="../assets/js/update-room.js"></script>
   </body>
 </html>

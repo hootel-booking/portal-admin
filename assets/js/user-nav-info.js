@@ -84,6 +84,6 @@ $(document).ready(function () {
         localStorage.removeItem("TOKEN");
         localStorage.removeItem("CURRENT_USER");
         window.location.href = "http://127.0.0.1:5502/html/auth-login.html";
-      });
+    });
   });
   

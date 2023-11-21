@@ -1,79 +1,60 @@
 $(document).ready(function () {
-    const idElTable = document.getElementById("reservationTable");
+    const idElTable = document.getElementById("idRoomTable");
     const token = localStorage.getItem("TOKEN");
 
     $.ajax({
-        url: `http://localhost:8080/reservation`,
+        url: `http://localhost:8080/rooms`,
         method: "get",
         headers: {
             Authorization: "Bearer " + token,
         },
     }).done(function (data) {
-        const reservationList = data?.data;
+        const rooms = data?.data;
 
-        reservationList.forEach((reservation, index) => {
+        rooms.forEach((room, index) => {
             let htmlDisplay = "";
+
             // create tr element
             let tr = document.createElement("tr");
-            tr.setAttribute("id", `idReservation-${reservation.id}`);
+            tr.setAttribute("id", `idRoom-${room.id}`);
 
             idElTable.appendChild(tr);
-            const idElReservation = document.getElementById(`idReservation-${reservation.id}`);
-            const betwenTwoDays = canculateBetweenTwoDays(new Date(reservation.dateCheckIn), new Date(reservation.dateCheckout));
-            const total = canculateTotal(betwenTwoDays, reservation.price, reservation.discount);
+            const idElRoom = document.getElementById(`idRoom-${room.id}`);
 
             htmlDisplay = `
                 <td>${index+1}</td>
-                <td>${reservation.roomName}</td>
-                <td>${displayDate(reservation.dateCheckIn)}</td>
-                <td>${displayDate(reservation.dateCheckout)}</td>
-                <td>${displayDate(reservation.createDate)}</td>
-                <td>${total}</td>
-                <td>${reservation.emailUser}</td>
-                <td>${reservation.phoneUser}</td>
-                <td>${reservation.status}</td>
+                <td>${room.name}</td>
+                <td>${room.price}</td>
+                <td>${room.discount}</td>
+                <td>${room.square}</td>
+                <td>${room.nameType}</td>
+                <td>${displayDate(room.createDate)}</td>
                 <td>
                     <div class="dropdown">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                             <i class="bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a style="display:${showBtnEdit(reservation.status)};" class="dropdown-item" href="../../html/reservation-update.html?id=${reservation.id}">
+                            <a class="dropdown-item" href="../../html/update-room.html?id=${room.id}">
                                 <i class="bx bx-edit-alt me-1"></i> Edit
-                            </a>
-                            <a class="dropdown-item" href="../../html/reservation-detail.html?id=${reservation.id}">
-                                <i class="bx bx-detail me-1"></i> Detail
                             </a>
                         </div>
                     </div>
                 </td>
             `;
 
-            idElReservation.innerHTML = htmlDisplay;
-        })
+            idElRoom.innerHTML = htmlDisplay;
+        });
     }).fail(function(jqXHR, textStatus, errorThrown) {
         displayToast("Error: " + errorThrown, 3);
     });
 
-    function showBtnEdit(status) {
-        if (status === "CANCEL") {
-            return "none";
-        }
-        return "";
-    }
+    $(document).on("click", ".btn-create", function (e) {
+        // prevent reload page
+        e.preventDefault();
 
-    function canculateBetweenTwoDays(date1, date2) {
-        const diffInTime = date2.getTime() - date1.getTime();
-        return diffInTime / (1000 * 3600 * 24);
-    }
-
-    function canculateTotal(betwenTwoDays, price, discount) {
-        if (discount === 0) {
-            return betwenTwoDays * price;
-        }
-
-        return ((100 - discount) * (betwenTwoDays * price)) / 100;
-    }
+        window.location.replace("http://127.0.0.1:5502/html/create-room.html");
+    })
 
     function displayDate(date) {
         const dateUTC = new Date(date);

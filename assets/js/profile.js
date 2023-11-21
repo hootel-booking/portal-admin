@@ -85,7 +85,7 @@ $(document).ready(function () {
                                 </div>
                             </div>
                         </p>
-                        <div class="mt-2">
+                        <div class="mt-2" style="float: right;">
                             <button type="reset" class="btn btn-outline-secondary btn-back">Back</button>
                         </div>
                     </div>
@@ -94,7 +94,7 @@ $(document).ready(function () {
         `;
         idElForm.innerHTML = htmlDisplay;
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        alert("Error " + errorThrown);
+        displayToast("Error: " + errorThrown, 3);
     });
 
     $(document).on("click", ".btn-back", function (e) {
@@ -102,4 +102,47 @@ $(document).ready(function () {
         e.preventDefault();
         window.history.back();
     })
+
+    function displayToast(content, status) {
+        let title = "Successful";
+        const idEl = document.getElementById("toastMessage");
+
+        switch(status) {
+            case 1:
+                // SUCCESS
+                idEl.classList.remove('bg-warning');
+                idEl.classList.remove('bg-danger');
+
+                idEl.classList.add('bg-success', 'show');
+            break;
+            case 2:
+                // WARNING
+                title = "Warning";
+                idEl.classList.remove('bg-danger');
+                idEl.classList.remove('bg-success');
+
+                idEl.classList.add('bg-warning', 'show');
+            break;
+            case 3:
+                // DANGER
+                title = "Error";
+                idEl.classList.remove('bg-warning');
+                idEl.classList.remove('bg-success');
+
+                idEl.classList.add('bg-danger', 'show');
+            break;
+        }
+
+        let htmlDisplay = `
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">${title}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${content}
+            </div>
+        `;
+        idEl.innerHTML = htmlDisplay;
+    }
 })
