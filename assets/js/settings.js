@@ -127,11 +127,17 @@ $(document).ready(function () {
             idElForm.innerHTML = htmlDisplay;
 
             displayAvatar(user?.avatar);
-        })
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            displayToast("Error: " + errorThrown, 3);
+        });
     }
 
     $(document).on("click", ".btn-save", function (e) {
         e.preventDefault();
+
+        if (validateForm() === 1) {
+            return;
+        }
 
         const idElFile = document.getElementById("formAccountSettings");
         const formData = new FormData(idElFile);
@@ -156,13 +162,13 @@ $(document).ready(function () {
         .then(response => response.json())
         .then(data => {
             if (data?.data) {
-                alert("Success");
+                displayToast("Update successful", 1);
             } else {
-                alert("Error");
+                displayToast("Update failed", 3);
             }
         })
         .catch(error => {
-            console.error('Error uploading image:', error);
+            displayToast("Error: " + error, 3);
         });
     })
 
@@ -178,5 +184,70 @@ $(document).ready(function () {
             "../assets/img/avatars/1.png";
         const idElFile = document.getElementById("uploadedAvatar");
         idElFile.setAttribute("src", data);
+    }
+
+    function validateForm() {
+        const phoneNumber = $("#phone").val();
+        const patternPhoneNumber = /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/i;
+        if (!patternPhoneNumber.test(phoneNumber)) {
+            displayToast("Phone number is invalid", 2);
+            return 1;
+        }
+
+        const transfer = $("#transferAmount").val();
+        if (transfer) {
+            if (isNaN(transfer)) {
+                displayToast("Tranfer amount is invalid. Please input a number", 2);
+                return 1;
+            } else if (transfer < 0) {
+                displayToast("Tranfer amount is invalid", 2);
+                return 1;
+            }
+        }
+
+        return 0;
+    }
+
+    function displayToast(content, status) {
+        let title = "Successful";
+        const idEl = document.getElementById("toastMessage");
+
+        switch(status) {
+            case 1:
+                // SUCCESS
+                idEl.classList.remove('bg-warning');
+                idEl.classList.remove('bg-danger');
+
+                idEl.classList.add('bg-success', 'show');
+            break;
+            case 2:
+                // WARNING
+                title = "Warning";
+                idEl.classList.remove('bg-danger');
+                idEl.classList.remove('bg-success');
+
+                idEl.classList.add('bg-warning', 'show');
+            break;
+            case 3:
+                // DANGER
+                title = "Error";
+                idEl.classList.remove('bg-warning');
+                idEl.classList.remove('bg-success');
+
+                idEl.classList.add('bg-danger', 'show');
+            break;
+        }
+
+        let htmlDisplay = `
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">${title}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${content}
+            </div>
+        `;
+        idEl.innerHTML = htmlDisplay;
     }
 })

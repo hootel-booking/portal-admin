@@ -68,10 +68,10 @@ $(document).ready(function () {
                 </div>
             </div>
             <div class="row justify-content-end">
-                <div class="col-sm-5">
+                <div class="col-sm-1">
                     <input type="submit" class="btn btn-primary btn-submit-user" value="Submit"/>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-1">
                     <input type="button" class="btn btn-outline-secondary btn-back" value="Back"/>
                 </div>
             </div>
@@ -79,7 +79,7 @@ $(document).ready(function () {
 
         idElForm.innerHTML = htmlDisplay;
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        alert("Error " + errorThrown);
+        displayToast("Error: " + errorThrown, 3);
     });
 
     function getListRole(idRole) {
@@ -97,18 +97,24 @@ $(document).ready(function () {
             });
 
             idRoles.innerHTML = htmDisplay;
-        })
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            displayToast("Error: " + errorThrown, 3);
+        });
     }
 
     $(document).on("click", ".btn-submit-user", function (e) {
         // prevent reload page
         e.preventDefault();
 
+        let phone = $("#phone").val();
+        if (validateForm(phone) === 1) {
+            return;
+        }
+
         const getIdElSelect = document.getElementById("idRoles");
 
         let firstName = $("#first-name").val();
         let lastName = $("#last-name").val();
-        let phone = $("#phone").val();
         let idRole = getIdElSelect.value;
 
         $.ajax({
@@ -127,12 +133,12 @@ $(document).ready(function () {
         }).done(function (data) {
             const result = data?.data;
             if (result) {
-                alert("Success");
+                displayToast("Update successfull!", 1);
             } else {
-                alert("Error");
+                displayToast("Update failed!", 3);
             }
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert("Error " + errorThrown);
+            displayToast("Error: " + errorThrown, 3);
         });
     })
 
@@ -142,4 +148,57 @@ $(document).ready(function () {
 
         window.location.href = "http://127.0.0.1:5502/html/users.html";
     })
+
+    function validateForm(phoneNumber) {
+        const patternPhoneNumber = /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/i;
+        if (!patternPhoneNumber.test(phoneNumber)) {
+            displayToast("Phone number is invalid", 2);
+            return 1;
+        }
+
+        return 0;
+    }
+
+    function displayToast(content, status) {
+        let title = "Successful";
+        const idEl = document.getElementById("toastMessage");
+
+        switch(status) {
+            case 1:
+                // SUCCESS
+                idEl.classList.remove('bg-warning');
+                idEl.classList.remove('bg-danger');
+
+                idEl.classList.add('bg-success', 'show');
+            break;
+            case 2:
+                // WARNING
+                title = "Warning";
+                idEl.classList.remove('bg-danger');
+                idEl.classList.remove('bg-success');
+
+                idEl.classList.add('bg-warning', 'show');
+            break;
+            case 3:
+                // DANGER
+                title = "Error";
+                idEl.classList.remove('bg-warning');
+                idEl.classList.remove('bg-success');
+
+                idEl.classList.add('bg-danger', 'show');
+            break;
+        }
+
+        let htmlDisplay = `
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">${title}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${content}
+            </div>
+        `;
+        idEl.innerHTML = htmlDisplay;
+    }
 })

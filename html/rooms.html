@@ -90,7 +90,7 @@
             </li>
 
             <!-- Rooms -->
-            <li class="menu-item">
+            <li class="menu-item active">
               <a href="rooms.html" class="menu-link">
                 <i class='menu-icon bx bx-hotel'></i>
                 <div data-i18n="Analytics">Rooms</div>
@@ -98,7 +98,7 @@
             </li>
 
             <!-- Users -->
-            <li class="menu-item active">
+            <li class="menu-item">
               <a href="users.html" class="menu-link">
                 <i class="menu-icon bx bx-user"></i>
                 <div data-i18n="Analytics">Users</div>
@@ -156,35 +156,38 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Users</h4>
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Rooms</h4>
                 <!-- toast message -->
-              <div
-                class="bs-toast toast fade bg-success"
-                role="alert"
-                aria-live="assertive"
-                aria-atomic="true"
-                style="position: fixed;"
-                id="toastMessage"
-              >
-              </div>
+                <div
+                  class="bs-toast toast fade bg-success"
+                  role="alert"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                  style="position: fixed;"
+                  id="toastMessage"
+                >
+                </div>
 
               <!-- Basic Bootstrap Table -->
               <div class="card">
+                <div class="m-2" style="display: flex; justify-content: end;">
+                  <button type="reset" class="btn btn-primary btn-create">Create</button>
+                </div>
                 <div class="table-responsive text-nowrap">
                   <table class="table">
                     <thead>
                       <tr>
                         <th></th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Role</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Size (m2)</th>
+                        <th>Type</th>
+                        <th>Create date</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody class="table-border-bottom-0" id="idUserTable">
+                    <tbody class="table-border-bottom-0" id="idRoomTable">
                     </tbody>
                   </table>
                 </div>
@@ -227,6 +230,6 @@
 
     <script src="../assets/js/guard.js"></script>
     <script src="../assets/js/user-nav-info.js"></script>
-    <script src="../assets/js/users.js"></script>
+    <script src="../assets/js/rooms.js"></script>
   </body>
 </html>

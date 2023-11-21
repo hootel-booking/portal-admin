@@ -5,6 +5,7 @@ $(document).ready(function () {
     const urlParams = new URLSearchParams(queryString);
     const idReservation = Number(urlParams.get("id"));
     const idElInfo = document.getElementById("reservationInfo");
+    let total = 0;
 
     $.ajax({
         url: `http://localhost:8080/reservation/id=${idReservation}`,
@@ -15,7 +16,7 @@ $(document).ready(function () {
     }).done(function (data) {
         const reservation = data?.data;
         const betwenTwoDays = canculateBetweenTwoDays(new Date(reservation.dateCheckIn), new Date(reservation.dateCheckout));
-        const total = canculateTotal(betwenTwoDays, reservation.price, reservation.discount);
+        total = canculateTotal(betwenTwoDays, reservation.price, reservation.discount);
         let htmlDisplay = "";
 
         htmlDisplay = `
@@ -76,7 +77,7 @@ $(document).ready(function () {
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="discount">Discount</label>
+                                    <label class="col-sm-2 col-form-label" for="discount">Discount(%)</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="discount" value="${reservation.discount}" disabled/>
                                     </div>
@@ -105,10 +106,10 @@ $(document).ready(function () {
                     </div>
                 </div>
                 <div class="row m-2 justify-content-end">
-                    <div class="col-sm-5">
+                    <div class="col-sm-1">
                         <input type="submit" class="btn btn-primary btn-submit" value="Submit"/>
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-1">
                         <input type="button" class="btn btn-outline-secondary btn-back" value="Back"/>
                     </div>
                 </div>
@@ -118,7 +119,9 @@ $(document).ready(function () {
         idElInfo.innerHTML = htmlDisplay;
 
         getListStatus(reservation.idStatus);
-    })
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        displayToast("Error: " + errorThrown, 3);
+    });
 
     function getListStatus(idStatus) {
         $.ajax({
@@ -135,7 +138,9 @@ $(document).ready(function () {
             });
 
             idDropdownStatus.innerHTML = htmDisplay;
-        })
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            displayToast("Error: " + errorThrown, 3);
+        });
     }
 
     function displayDate(date) {
@@ -171,9 +176,12 @@ $(document).ready(function () {
         // prevent reload page
         e.preventDefault();
 
-        const getIdElSelect = document.getElementById("idDropdownStatus");
-
         let deposit = $("#deposit").val();
+        if (validateForm(deposit, total) === 1) {
+            return;
+        }
+
+        const getIdElSelect = document.getElementById("idDropdownStatus");
         let idStatus = getIdElSelect.value;
 
         $.ajax({
@@ -190,14 +198,67 @@ $(document).ready(function () {
         }).done(function (data) {
             const result = data?.data;
             if (result) {
-                alert("Success");
+                displayToast("Update successfull!", 1);
             } else {
-                alert("Error");
+                displayToast("Update failed!", 3);
             }
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert("Error " + errorThrown);
+            displayToast("Error: " + errorThrown, 3);
         });
-
-        //window.location.replace("http://127.0.0.1:5502/html/reservation.html");
     })
+
+    function validateForm(deposit, total) {
+        if (isNaN(deposit)) {
+            displayToast("Deposit is invalid. Please input a number", 2);
+            return 1;
+        } else if (deposit < 0 || deposit > total) {
+            displayToast("Deposit is invalid. Deposit <= total", 2);
+            return 1;
+        }
+
+        return 0;
+    }
+
+    function displayToast(content, status) {
+        let title = "Successful";
+        const idEl = document.getElementById("toastMessage");
+
+        switch(status) {
+            case 1:
+                // SUCCESS
+                idEl.classList.remove('bg-warning');
+                idEl.classList.remove('bg-danger');
+
+                idEl.classList.add('bg-success', 'show');
+            break;
+            case 2:
+                // WARNING
+                title = "Warning";
+                idEl.classList.remove('bg-danger');
+                idEl.classList.remove('bg-success');
+
+                idEl.classList.add('bg-warning', 'show');
+            break;
+            case 3:
+                // DANGER
+                title = "Error";
+                idEl.classList.remove('bg-warning');
+                idEl.classList.remove('bg-success');
+
+                idEl.classList.add('bg-danger', 'show');
+            break;
+        }
+
+        let htmlDisplay = `
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">${title}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${content}
+            </div>
+        `;
+        idEl.innerHTML = htmlDisplay;
+    }
 })
