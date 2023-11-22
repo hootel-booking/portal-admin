@@ -112,7 +112,7 @@ $(document).ready(function () {
                             class="form-control"
                             type="text"
                             id="transfer"
-                            name="transferAmount"
+                            name="transfer"
                             placeholder="0"
                         />
                     </div>
@@ -146,10 +146,10 @@ $(document).ready(function () {
         formData.set("lastName", $("#lastName").val());
         formData.set("phone", $("#phone").val());
         formData.set("accountNumber", $("#accountNumber").val());
-        formData.set("amount", $("#amount").val() ? $("#amount").val() : 0);
+        formData.set("transferAmount", $("#amount").val() ? $("#amount").val() : 0);
         formData.set(
-            "transferAmount",
-            $("#transferAmount").val() ? $("#transferAmount").val() : 0
+            "transfer",
+            $("#transfer").val() ? $("#transfer").val() : 0
         );
 
         fetch(`http://localhost:8080/users/profileId=${idUser}`, {
@@ -189,12 +189,12 @@ $(document).ready(function () {
     function validateForm() {
         const phoneNumber = $("#phone").val();
         const patternPhoneNumber = /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/i;
-        if (!patternPhoneNumber.test(phoneNumber)) {
+        if (phoneNumber && !patternPhoneNumber.test(phoneNumber)) {
             displayToast("Phone number is invalid", 2);
             return 1;
         }
 
-        const transfer = $("#transferAmount").val();
+        const transfer = $("#transfer").val();
         if (transfer) {
             if (isNaN(transfer)) {
                 displayToast("Tranfer amount is invalid. Please input a number", 2);
