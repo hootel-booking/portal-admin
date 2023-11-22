@@ -151,7 +151,7 @@ $(document).ready(function () {
 
     function validateForm(phoneNumber) {
         const patternPhoneNumber = /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/i;
-        if (!patternPhoneNumber.test(phoneNumber)) {
+        if (phoneNumber && !patternPhoneNumber.test(phoneNumber)) {
             displayToast("Phone number is invalid", 2);
             return 1;
         }
